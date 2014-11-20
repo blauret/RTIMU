@@ -34,6 +34,7 @@
 
 #define RTIMULIB_IMU_TYPE                   "IMUType"
 #define RTIMULIB_FUSION_TYPE                "FusionType"
+#define RTIMULIB_BUS_MODE                   "BusMode"
 #define RTIMULIB_BUS_IS_I2C                 "BusIsI2C"
 #define RTIMULIB_I2C_SLAVEADDRESS           "I2CSlaveAddress"
 #define RTIMULIB_I2C_BUS                    "I2CBus"

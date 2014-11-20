@@ -52,6 +52,7 @@ bool RTIMUSettings::discoverIMU(int& imuType, bool& busIsI2C, unsigned char& sla
 
     //  auto detect on I2C bus
 
+    m_busMode  = true;
     m_busIsI2C = true;
 
     if (HALOpen()) {
@@ -282,6 +283,8 @@ bool RTIMUSettings::loadSettings()
             m_imuType = atoi(val);
         } else if (strcmp(key, RTIMULIB_FUSION_TYPE) == 0) {
             m_fusionType = atoi(val);
+        } else if (strcmp(key, RTIMULIB_BUS_MODE) == 0) {
+            m_busMode = strcmp(val, "false") == 0;
         } else if (strcmp(key, RTIMULIB_BUS_IS_I2C) == 0) {
             m_busIsI2C = strcmp(val, "true") == 0;
         } else if (strcmp(key, RTIMULIB_I2C_BUS) == 0) {

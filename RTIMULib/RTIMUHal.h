@@ -79,6 +79,7 @@ public:
     RTIMUHal();
     virtual ~RTIMUHal();
 
+    bool m_busMode;                                         // true if using the Bus mode. False is samples come from files
     bool m_busIsI2C;                                        // true if I2C bus in use, false if SPI in use
     unsigned char m_I2CBus;                                 // I2C bus of the imu (eg 1 for Raspberry Pi usually)
     unsigned char m_SPIBus;                                 // SPI bus of the imu (eg 0 for Raspberry Pi usually)

@@ -28,7 +28,7 @@
 
 #ifndef WIN32
 
-#include <linux/spi/spidev.h>
+//#include <linux/spi/spidev.h>
 
 RTIMUHal::RTIMUHal()
 {
@@ -48,9 +48,9 @@ RTIMUHal::~RTIMUHal()
 bool RTIMUHal::HALOpen()
 {
     char buf[32];
-    unsigned char SPIMode = SPI_MODE_0;
-    unsigned char SPIBits = 8;
-    uint32_t SPISpeed = m_SPISpeed;
+//    unsigned char SPIMode = SPI_MODE_0;
+//    unsigned char SPIBits = 8;
+//    uint32_t SPISpeed = m_SPISpeed;
 
     if (m_busIsI2C) {
         if (m_I2C >= 0)
@@ -68,54 +68,54 @@ bool RTIMUHal::HALOpen()
             return false;
         }
     } else {
-        if (m_SPIBus == 255) {
-            HAL_ERROR("No SPI bus has been set\n");
-            return false;
-        }
-
-        sprintf(buf, "/dev/spidev%d.0", m_SPIBus);
-        m_SPI = open(buf, O_RDWR);
-        if (m_SPI < 0) {
-            HAL_ERROR1("Failed to open SPI bus %d\n", m_SPIBus);
-            m_SPI = -1;
-            return false;
-        }
-
-        if (ioctl(m_SPI, SPI_IOC_WR_MODE, &SPIMode) < 0) {
-            HAL_ERROR1("Failed to set WR SPI_MODE0 on bus %d", m_SPIBus);
-            close(m_SPIBus);
-            return false;
-        }
-
-        if (ioctl(m_SPI, SPI_IOC_RD_MODE, &SPIMode) < 0) {
-            HAL_ERROR1("Failed to set RD SPI_MODE0 on bus %d", m_SPIBus);
-            close(m_SPIBus);
-            return false;
-        }
-
-        if (ioctl(m_SPI, SPI_IOC_WR_BITS_PER_WORD, &SPIBits) < 0) {
-            HAL_ERROR1("Failed to set WR 8 bit mode on bus %d", m_SPIBus);
-            close(m_SPIBus);
-            return false;
-        }
-
-        if (ioctl(m_SPI, SPI_IOC_RD_BITS_PER_WORD, &SPIBits) < 0) {
-            HAL_ERROR1("Failed to set RD 8 bit mode on bus %d", m_SPIBus);
-            close(m_SPIBus);
-            return false;
-        }
-
-        if (ioctl(m_SPI, SPI_IOC_WR_MAX_SPEED_HZ, &SPISpeed) < 0) {
-             HAL_ERROR2("Failed to set WR %dHz on bus %d", SPISpeed, m_SPIBus);
-             close(m_SPIBus);
-             return false;
-        }
-
-        if (ioctl(m_SPI, SPI_IOC_RD_MAX_SPEED_HZ, &SPISpeed) < 0) {
-             HAL_ERROR2("Failed to set RD %dHz on bus %d", SPISpeed, m_SPIBus);
-             close(m_SPIBus);
-             return false;
-        }
+//        if (m_SPIBus == 255) {
+//            HAL_ERROR("No SPI bus has been set\n");
+//            return false;
+//        }
+//
+//        sprintf(buf, "/dev/spidev%d.0", m_SPIBus);
+//        m_SPI = open(buf, O_RDWR);
+//        if (m_SPI < 0) {
+//            HAL_ERROR1("Failed to open SPI bus %d\n", m_SPIBus);
+//            m_SPI = -1;
+//            return false;
+//        }
+//
+//        if (ioctl(m_SPI, SPI_IOC_WR_MODE, &SPIMode) < 0) {
+//            HAL_ERROR1("Failed to set WR SPI_MODE0 on bus %d", m_SPIBus);
+//            close(m_SPIBus);
+//            return false;
+//        }
+//
+//        if (ioctl(m_SPI, SPI_IOC_RD_MODE, &SPIMode) < 0) {
+//            HAL_ERROR1("Failed to set RD SPI_MODE0 on bus %d", m_SPIBus);
+//            close(m_SPIBus);
+//            return false;
+//        }
+//
+//        if (ioctl(m_SPI, SPI_IOC_WR_BITS_PER_WORD, &SPIBits) < 0) {
+//            HAL_ERROR1("Failed to set WR 8 bit mode on bus %d", m_SPIBus);
+//            close(m_SPIBus);
+//            return false;
+//        }
+//
+//        if (ioctl(m_SPI, SPI_IOC_RD_BITS_PER_WORD, &SPIBits) < 0) {
+//            HAL_ERROR1("Failed to set RD 8 bit mode on bus %d", m_SPIBus);
+//            close(m_SPIBus);
+//            return false;
+//        }
+//
+//        if (ioctl(m_SPI, SPI_IOC_WR_MAX_SPEED_HZ, &SPISpeed) < 0) {
+//             HAL_ERROR2("Failed to set WR %dHz on bus %d", SPISpeed, m_SPIBus);
+//             close(m_SPIBus);
+//             return false;
+//        }
+//
+//        if (ioctl(m_SPI, SPI_IOC_RD_MAX_SPEED_HZ, &SPISpeed) < 0) {
+//             HAL_ERROR2("Failed to set RD %dHz on bus %d", SPISpeed, m_SPIBus);
+//             close(m_SPIBus);
+//             return false;
+//        }
     }
     return true;
 }
@@ -192,16 +192,16 @@ bool RTIMUHal::HALWrite(unsigned char slaveAddr, unsigned char regAddr,
 
 bool RTIMUHal::ifWrite(unsigned char *data, unsigned char length)
 {
-    struct spi_ioc_transfer wrIOC;
+//    struct spi_ioc_transfer wrIOC;
 
     if (m_busIsI2C) {
         return write(m_I2C, data, length);
     } else {
-        memset(&wrIOC, 0, sizeof(wrIOC));
-        wrIOC.tx_buf = (unsigned long) data;
-        wrIOC.rx_buf = 0;
-        wrIOC.len = length;
-        return ioctl(m_SPI, SPI_IOC_MESSAGE(1), &wrIOC);
+//        memset(&wrIOC, 0, sizeof(wrIOC));
+//        wrIOC.tx_buf = (unsigned long) data;
+//        wrIOC.rx_buf = 0;
+//        wrIOC.len = length;
+//        return ioctl(m_SPI, SPI_IOC_MESSAGE(1), &wrIOC);
     }
 }
 
@@ -210,8 +210,8 @@ bool RTIMUHal::HALRead(unsigned char slaveAddr, unsigned char regAddr, unsigned 
                     unsigned char *data, const char *errorMsg)
 {
     int tries, result, total;
-    unsigned char rxBuff[MAX_READ_LEN + 1];
-    struct spi_ioc_transfer rdIOC;
+//    unsigned char rxBuff[MAX_READ_LEN + 1];
+//    struct spi_ioc_transfer rdIOC;
 
     if (m_busIsI2C) {
         if (!HALWrite(slaveAddr, regAddr, 0, NULL, errorMsg))
@@ -244,19 +244,19 @@ bool RTIMUHal::HALRead(unsigned char slaveAddr, unsigned char regAddr, unsigned 
             return false;
         }
     } else {
-        rxBuff[0] = regAddr | 0x80;
-        memcpy(rxBuff + 1, data, length);
-        memset(&rdIOC, 0, sizeof(rdIOC));
-        rdIOC.tx_buf = (unsigned long) rxBuff;
-        rdIOC.rx_buf = (unsigned long) rxBuff;
-        rdIOC.len = length + 1;
-
-        if (ioctl(m_SPI, SPI_IOC_MESSAGE(1), &rdIOC) < 0) {
-            if (strlen(errorMsg) > 0)
-                HAL_ERROR2("SPI read error from %d - %s\n", regAddr, errorMsg);
-            return false;
-        }
-        memcpy(data, rxBuff + 1, length);
+//        rxBuff[0] = regAddr | 0x80;
+//        memcpy(rxBuff + 1, data, length);
+//        memset(&rdIOC, 0, sizeof(rdIOC));
+//        rdIOC.tx_buf = (unsigned long) rxBuff;
+//        rdIOC.rx_buf = (unsigned long) rxBuff;
+//        rdIOC.len = length + 1;
+//
+//        if (ioctl(m_SPI, SPI_IOC_MESSAGE(1), &rdIOC) < 0) {
+//            if (strlen(errorMsg) > 0)
+//                HAL_ERROR2("SPI read error from %d - %s\n", regAddr, errorMsg);
+//            return false;
+//        }
+//        memcpy(data, rxBuff + 1, length);
     }
     return true;
 }
@@ -272,10 +272,10 @@ bool RTIMUHal::I2CSelectSlave(unsigned char slaveAddr, const char *errorMsg)
         return false;
     }
 
-    if (ioctl(m_I2C, I2C_SLAVE, slaveAddr) < 0) {
-        HAL_ERROR2("I2C slave select %d failed - %s\n", slaveAddr, errorMsg);
-        return false;
-    }
+//    if (ioctl(m_I2C, I2C_SLAVE, slaveAddr) < 0) {
+//        HAL_ERROR2("I2C slave select %d failed - %s\n", slaveAddr, errorMsg);
+//        return false;
+//    }
 
     m_currentSlave = slaveAddr;
 
