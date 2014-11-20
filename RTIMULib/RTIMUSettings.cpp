@@ -170,13 +170,8 @@ bool RTIMUSettings::discoverIMU(int& imuType, bool& busIsI2C, unsigned char& sla
     return false;
 }
 
-bool RTIMUSettings::loadSettings()
+void RTIMUSettings::setDefaults()
 {
-    char buf[200];
-    char key[200];
-    char val[200];
-    RTFLOAT ftemp;
-
     //  preset general defaults
 
     m_imuType = RTIMU_TYPE_AUTODISCOVER;
@@ -186,6 +181,7 @@ bool RTIMUSettings::loadSettings()
     m_SPIBus = 0;
     m_SPISpeed = 500000;
     m_fusionType = RTFUSION_TYPE_RTQF;
+    m_axisRotation = RTIMU_XNORTH_YEAST;
     m_compassCalValid = false;
     m_compassCalEllipsoidValid = false;
     for (int i = 0; i < 3; i++) {
@@ -256,7 +252,16 @@ bool RTIMUSettings::loadSettings()
 
     m_LSM9DS0CompassSampleRate = LSM9DS0_COMPASS_SAMPLERATE_50;
     m_LSM9DS0CompassFsr = LSM9DS0_COMPASS_FSR_2;
+}
 
+bool RTIMUSettings::loadSettings()
+{
+    setDefaults();
+
+    char buf[200];
+    char key[200];
+    char val[200];
+    RTFLOAT ftemp;
     //  check to see if settings file exists
 
     if (!(m_fd = fopen(m_filename, "r"))) {
@@ -295,6 +300,8 @@ bool RTIMUSettings::loadSettings()
             m_SPISpeed = atoi(val);
         } else if (strcmp(key, RTIMULIB_I2C_SLAVEADDRESS) == 0) {
             m_I2CSlaveAddress = atoi(val);
+        } else if (strcmp(key, RTIMULIB_AXIS_ROTATION) == 0) {
+            m_axisRotation = atoi(val);
 
         // compass calibration
 
@@ -558,7 +565,12 @@ bool RTIMUSettings::saveSettings()
     setComment("I2C slave address (filled in automatically by auto discover) ");
     setValue(RTIMULIB_I2C_SLAVEADDRESS, m_I2CSlaveAddress);
 
-    //  Compass calibration settings
+    setBlank();
+    setComment("");
+    setComment("IMU axis rotation - see RTIMU.h for details");
+    setValue(RTIMULIB_AXIS_ROTATION, m_axisRotation);
+
+   //  Compass calibration settings
 
     setBlank();
     setComment("#####################################################################");

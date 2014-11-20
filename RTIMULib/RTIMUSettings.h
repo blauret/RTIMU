@@ -40,6 +40,7 @@
 #define RTIMULIB_I2C_BUS                    "I2CBus"
 #define RTIMULIB_SPI_BUS                    "SPIBus"
 #define RTIMULIB_SPI_SPEED                  "SPISpeed"
+#define RTIMULIB_AXIS_ROTATION              "AxisRotation"
 
 //  MPU9150 settings keys
 
@@ -153,19 +154,24 @@ public:
 
     bool discoverIMU(int& imuType, bool& busIsI2C, unsigned char& slaveAddress);
 
+    //  This function sets the settings to default values.
+
+    void setDefaults();
+
     //  This function loads the local variables from the settings file or uses defaults
 
-    bool loadSettings();
+    virtual bool loadSettings();
 
     //  This function saves the local variables to the settings file
 
-    bool saveSettings();
+    virtual bool saveSettings();
 
     //  These are the local variables
 
     int m_imuType;                                          // type code of imu in use
     int m_fusionType;                                       // fusion algorithm type code
     unsigned char m_I2CSlaveAddress;                        // I2C slave address of the imu
+    int m_axisRotation;                                     // axis rotation code
 
     bool m_compassCalValid;                                 // true if there is valid compass calibration data
     RTVector3 m_compassCalMin;                              // the minimum values
