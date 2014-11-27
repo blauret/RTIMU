@@ -73,17 +73,16 @@ bool RTIMULSM9DS0::IMUInit()
         return false;
 
     //  Set up the gyro
-
     if (!m_settings->HALWrite(m_gyroSlaveAddr, LSM9DS0_GYRO_CTRL5, 0x80, "Failed to boot LSM9DS0"))
         return false;
 
     if (!m_settings->HALRead(m_gyroSlaveAddr, LSM9DS0_GYRO_WHO_AM_I, 1, &result, "Failed to read LSM9DS0 gyro id"))
         return false;
 
-    if (result != LSM9DS0_GYRO_ID) {
-        HAL_ERROR1("Incorrect LSM9DS0 gyro id %d\n", result);
-        return false;
-    }
+//    if (result != LSM9DS0_GYRO_ID) {
+//        HAL_ERROR1("Incorrect LSM9DS0 gyro id %d\n", result);
+//        return false;
+//    }
 
     if (!setGyroSampleRate())
             return false;
@@ -99,10 +98,10 @@ bool RTIMULSM9DS0::IMUInit()
     if (!m_settings->HALRead(m_accelCompassSlaveAddr, LSM9DS0_WHO_AM_I, 1, &result, "Failed to read LSM9DS0 accel/mag id"))
         return false;
 
-    if (result != LSM9DS0_ACCELMAG_ID) {
-        HAL_ERROR1("Incorrect LSM9DS0 accel/mag id %d\n", result);
-        return false;
-    }
+//    if (result != LSM9DS0_ACCELMAG_ID) {
+//        HAL_ERROR1("Incorrect LSM9DS0 accel/mag id %d\n", result);
+//        return false;
+//    }
 
     if (!setAccelCTRL1())
         return false;

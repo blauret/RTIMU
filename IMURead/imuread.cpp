@@ -16,12 +16,23 @@ using namespace std;
 
 
 int main() {
-	RTIMUSettings *m_settings = new RTIMUSettings("IMURead.ini");
+	RTIMUSettings *m_settings = new RTIMUSettings("IMURead");
 
-	 RTIMU::createIMU(m_settings);
-	 cout << "IMU Created" << endl;
+	RTIMU *myIMU = RTIMU::createIMU(m_settings);
+	cout << "IMU Created" << endl;
 
-	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
+	if(myIMU->IMUInit()) {
+
+        cout << "IMU initialized" << endl;
+
+
+	} else {
+
+        cout << "IMU intialisation failed" << endl;
+	}
+
+
+	cout << "Done" << endl; // prints !!!Hello World!!!
 
 
 

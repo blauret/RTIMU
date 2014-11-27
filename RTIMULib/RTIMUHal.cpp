@@ -140,7 +140,8 @@ void RTIMUHal::SPIClose()
 bool RTIMUHal::HALWrite(unsigned char slaveAddr, unsigned char regAddr,
                    unsigned char const data, const char *errorMsg)
 {
-    return HALWrite(slaveAddr, regAddr, 1, &data, errorMsg);
+//    return HALWrite(slaveAddr, regAddr, 1, &data, errorMsg);
+    return(1);
 }
 
 bool RTIMUHal::HALWrite(unsigned char slaveAddr, unsigned char regAddr,
@@ -209,55 +210,55 @@ bool RTIMUHal::ifWrite(unsigned char *data, unsigned char length)
 bool RTIMUHal::HALRead(unsigned char slaveAddr, unsigned char regAddr, unsigned char length,
                     unsigned char *data, const char *errorMsg)
 {
-    int tries, result, total;
-//    unsigned char rxBuff[MAX_READ_LEN + 1];
-//    struct spi_ioc_transfer rdIOC;
-
-    if (m_busIsI2C) {
-        if (!HALWrite(slaveAddr, regAddr, 0, NULL, errorMsg))
-            return false;
-
-        total = 0;
-        tries = 0;
-
-        while ((total < length) && (tries < 5)) {
-            result = read(m_I2C, data + total, length - total);
-
-            if (result < 0) {
-                if (strlen(errorMsg) > 0)
-                    HAL_ERROR3("I2C read error from %d, %d - %s\n", slaveAddr, regAddr, errorMsg);
-                return false;
-            }
-
-            total += result;
-
-            if (total == length)
-                break;
-
-            delayMs(10);
-            tries++;
-        }
-
-        if (total < length) {
-            if (strlen(errorMsg) > 0)
-                HAL_ERROR3("I2C read from %d, %d failed - %s\n", slaveAddr, regAddr, errorMsg);
-            return false;
-        }
-    } else {
-//        rxBuff[0] = regAddr | 0x80;
-//        memcpy(rxBuff + 1, data, length);
-//        memset(&rdIOC, 0, sizeof(rdIOC));
-//        rdIOC.tx_buf = (unsigned long) rxBuff;
-//        rdIOC.rx_buf = (unsigned long) rxBuff;
-//        rdIOC.len = length + 1;
+//    int tries, result, total;
+////    unsigned char rxBuff[MAX_READ_LEN + 1];
+////    struct spi_ioc_transfer rdIOC;
 //
-//        if (ioctl(m_SPI, SPI_IOC_MESSAGE(1), &rdIOC) < 0) {
+//    if (m_busIsI2C) {
+//        if (!HALWrite(slaveAddr, regAddr, 0, NULL, errorMsg))
+//            return false;
+//
+//        total = 0;
+//        tries = 0;
+//
+//        while ((total < length) && (tries < 5)) {
+//            result = read(m_I2C, data + total, length - total);
+//
+//            if (result < 0) {
+//                if (strlen(errorMsg) > 0)
+//                    HAL_ERROR3("I2C read error from %d, %d - %s\n", slaveAddr, regAddr, errorMsg);
+//                return false;
+//            }
+//
+//            total += result;
+//
+//            if (total == length)
+//                break;
+//
+//            delayMs(10);
+//            tries++;
+//        }
+//
+//        if (total < length) {
 //            if (strlen(errorMsg) > 0)
-//                HAL_ERROR2("SPI read error from %d - %s\n", regAddr, errorMsg);
+//                HAL_ERROR3("I2C read from %d, %d failed - %s\n", slaveAddr, regAddr, errorMsg);
 //            return false;
 //        }
-//        memcpy(data, rxBuff + 1, length);
-    }
+//    } else {
+////        rxBuff[0] = regAddr | 0x80;
+////        memcpy(rxBuff + 1, data, length);
+////        memset(&rdIOC, 0, sizeof(rdIOC));
+////        rdIOC.tx_buf = (unsigned long) rxBuff;
+////        rdIOC.rx_buf = (unsigned long) rxBuff;
+////        rdIOC.len = length + 1;
+////
+////        if (ioctl(m_SPI, SPI_IOC_MESSAGE(1), &rdIOC) < 0) {
+////            if (strlen(errorMsg) > 0)
+////                HAL_ERROR2("SPI read error from %d - %s\n", regAddr, errorMsg);
+////            return false;
+////        }
+////        memcpy(data, rxBuff + 1, length);
+//    }
     return true;
 }
 
